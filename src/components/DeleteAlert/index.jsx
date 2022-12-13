@@ -1,34 +1,33 @@
 import React from "react";
 import styled from "styled-components";
 
-const DeleteAlertModal = styled.div`
+const DeleteAlertModal = styled.section`
 	display: flex;
-	width: 252px;
-	height: 110px;
+	position: fixed;
 	background: rgba(0, 0, 0, 0.3);
 	backdrop-filter: blur(3px);
 	justify-content: center;
 	align-items: center;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
 	z-index: 100;
 `;
 
-const DeleteAlertArticle = styled.article`
-	width: 100%;
-	height: 100%;
-	background-color: white;
+const DeleteAlertArticle = styled.div`
+	width: 252px;
+	background-color: #fff;
 	border-radius: 10px;
 `;
 
-const AlertContents = styled.strong`
+const AlertMsg = styled.strong`
 	display: block;
-	width: 100%;
-	height: 64px;
 	padding: 22px;
 	text-align: center;
 	box-sizing: border-box;
 	border-bottom: 0.5px solid rgba(219, 219, 219, 1);
 	font-size: 16px;
-	font-weight: 500;
 `;
 
 const CancelBtn = styled.button`
@@ -58,7 +57,7 @@ export default function DeleteAlert() {
 	return (
 		<DeleteAlertModal>
 			<DeleteAlertArticle>
-				<AlertContents>상품을 삭제할까요?</AlertContents>
+				<AlertMsg>상품을 삭제할까요?</AlertMsg>
 				<CancelBtn>취소</CancelBtn>
 				<DeleteBtn>삭제</DeleteBtn>
 			</DeleteAlertArticle>
