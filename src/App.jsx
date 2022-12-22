@@ -37,7 +37,6 @@ function App() {
         <Route path="/chatlist" element={<ChatList />} />
         <Route path="/chatroom" element={<ChatRoom />} />
         <Route path="/404" element={<ErrorPage />} />
-        <Route path="/postedit/:postid" element={<PostUpload />} />
       </Routes>
     </>
   );

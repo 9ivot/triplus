@@ -5,7 +5,7 @@ export const useModal = (accountname) => {
   const [isModal, setIsModal] = useState(false);
   const [isModalAlert, setIsModalAlert] = useState(false);
   const isMyContent = accountname === userInfo.accountname;
-
+  console.log(isMyContent, userInfo.accountname);
   const handleModal = (e) => {
     setIsModal((prev) => !prev);
   };

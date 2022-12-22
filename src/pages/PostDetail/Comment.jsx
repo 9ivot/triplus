@@ -1,103 +1,31 @@
 import * as S from "./style";
 import { Link } from "react-router-dom";
-import { useState } from "react";
 import ModalContainer from "../../components/Modal/ModalContainer";
 import ModalList from "../../components/Modal/ModalList";
 import AlertModal from "../../components/Modal/AlertModal";
-import { useParams } from "react-router-dom";
-import axios from "axios";
+import { useModal } from "../../hooks/useModal";
+import { handleCommentTime } from "../../utils/handleCommentTime";
+import { useDelete } from "../../hooks/useDelete";
+import { useDeclaration } from "../../hooks/useDeclaration";
+import { useState } from "react";
 
 export default function Comment({ data, commentId, setCommentList }) {
-  const { postkey } = useParams();
-  const token = localStorage.getItem("token");
-  const [isModal, setIsModal] = useState(false);
-  const [isMyComment, setIsMyComment] = useState(true);
-  const [isModalAlert, setIsModalAlert] = useState(false);
+  const nowDate = handleCommentTime(new Date(data.createdAt));
+  const {
+    isModal,
+    isMyContent,
+    isModalAlert,
+    handleModal,
+    handleAlert,
+    handlCloseClick,
+  } = useModal(data.author.accountname);
 
-  const detailDate = (time) => {
-    const milliSeconds = new Date() - time;
-    const seconds = milliSeconds / 1000;
-    if (seconds < 60) return `방금 전`;
-    const minutes = seconds / 60;
-    if (minutes < 60) return `${Math.floor(minutes)}분 전`;
-    const hours = minutes / 60;
-    if (hours < 24) return `${Math.floor(hours)}시간 전`;
-    const days = hours / 24;
-    if (days < 7) return `${Math.floor(days)}일 전`;
-    const weeks = days / 7;
-    if (weeks < 5) return `${Math.floor(weeks)}주 전`;
-    const months = days / 30;
-    if (months < 12) return `${Math.floor(months)}개월 전`;
-    const years = days / 365;
-    return `${Math.floor(years)}년 전`;
-  };
-
-  const nowDate = detailDate(new Date(data.createdAt));
-
-  const accountName = "zesfnkse.fe";
-
-  const handleModal = (e) => {
-    setIsModal(!isModal);
-    if (accountName !== data.author.accountname) {
-      setIsMyComment(false);
-    }
-  };
-
-  const handleAlert = (e, txt) => {
-    e.stopPropagation();
-    setIsModalAlert(txt);
-  };
-
-  const handlCloseClick = () => {
-    setIsModalAlert(false);
-    setIsModal(false);
-  };
-
-  const handleDeleteComment = async (e) => {
-    e.preventDefault();
-    try {
-      await axios.delete(
-        `${process.env.REACT_APP_API_KEY}/post/${postkey}/comments/${commentId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-type": "application/json",
-          },
-        }
-      );
-      setCommentList();
-      handlCloseClick();
-      alert("댓글이 삭제되었습니다.");
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const handleDeclaration = async (e) => {
-    e.preventDefault();
-    try {
-      const res = await axios.post(
-        `${process.env.REACT_APP_API_KEY}/post/${postkey}/comments/${commentId}/report`,
-        {
-          report: {
-            comment: `${commentId}`,
-          },
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-type": "application/json",
-          },
-        }
-      );
-      console.log(res);
-      setCommentList();
-      handlCloseClick();
-      alert("댓글 신고가 완료되었습니다.");
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  const { handleDeleteComment } = useDelete(
+    commentId,
+    handlCloseClick,
+    setCommentList
+  );
+  const { handleDeclaration } = useDeclaration(commentId, handlCloseClick);
 
   return (
     <>
@@ -118,7 +46,7 @@ export default function Comment({ data, commentId, setCommentList }) {
       </S.CommentList>
       {isModal && (
         <ModalContainer onClick={handleModal}>
-          {isMyComment ? (
+          {isMyContent ? (
             <>
               <ModalList onClick={(e) => handleAlert(e, "삭제모달")}>
                 삭제

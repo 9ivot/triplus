@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link, useLocation, useParams } from "react-router-dom";
 import styled from "styled-components";
@@ -8,6 +9,7 @@ import { MainContainer } from "../../components/MainContainer";
 import Navbar from "../../components/Navbar";
 import UserInfo from "../../components/UserInfo";
 import { useGetData } from "../../hooks/useGetData";
+import { useGetFollowList } from "../../hooks/useGetFollowList";
 import IsFollowButton from "./IsFollowButton";
 
 const FollowContainer = styled.ul`

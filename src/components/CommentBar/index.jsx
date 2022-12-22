@@ -42,7 +42,8 @@ const CommentBtn = styled.button`
 `;
 
 export default function CommentBar({ postkey, setCommentList }) {
-  const token = localStorage.getItem("token");
+  const userInfo = JSON.parse(localStorage.getItem("userinfo"));
+
   const [txt, setTxt] = useState("");
 
   const handlePostComment = (e) => {
@@ -60,7 +61,7 @@ export default function CommentBar({ postkey, setCommentList }) {
         },
         {
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${userInfo.token}`,
             "Content-type": "application/json",
           },
         }

@@ -147,12 +147,7 @@ export default function PostCard({
               </ModalList>
               <ModalList
                 onClick={() => {
-                  navigate(`/postedit/${id}`, {
-                    state: {
-                      content: content,
-                      image: image,
-                    },
-                  });
+                  // navigate.push(`/post/edit`, { post });
                 }}
               >
                 수정

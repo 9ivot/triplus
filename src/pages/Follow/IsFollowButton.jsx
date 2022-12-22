@@ -2,8 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
-import { useFollowBtn } from "../../hooks/useFollowBtn";
-// import { handleFollow } from "../../utils/handleFollow";
+import { handleFollow } from "../../utils/handleFollow";
 
 const IsFollowBtn = styled.button`
   ${(props) =>
@@ -29,18 +28,24 @@ export default function IsFollowButton({
   isfollow,
   userAccountName,
   isProfile,
-  setProfile,
+  setTriggerFollow,
 }) {
-  const { isFollowing, handleFollow } = useFollowBtn(isfollow, userAccountName);
+  const userInfo = JSON.parse(localStorage.getItem("userinfo"));
+
   return (
     <IsFollowBtn
       onClick={() =>
-        handleFollow(isFollowing, userAccountName, setProfile && setProfile)
+        handleFollow(
+          userInfo.token,
+          isfollow,
+          setTriggerFollow,
+          userAccountName
+        )
       }
-      isfollow={isFollowing}
+      isfollow={isfollow}
       isProfile={isProfile}
     >
-      {isFollowing ? "취소" : "팔로우"}
+      {isfollow ? "취소" : "팔로우"}
     </IsFollowBtn>
   );
 }

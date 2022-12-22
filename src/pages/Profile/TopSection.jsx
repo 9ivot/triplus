@@ -65,7 +65,7 @@ const ProfileFollowTxt = styled.span`
 `;
 
 export default function ProfileTopSection() {
-  const { data, setData, isLoding, getData } = useGetData();
+  const { data, isLoding, getData } = useGetData();
   const userInfo = JSON.parse(localStorage.getItem("userinfo"));
   const { accountname } = useParams();
   const [triggerFollow, setTriggerFollow] = useState(false);
@@ -109,7 +109,6 @@ export default function ProfileTopSection() {
             setTriggerFollow={setTriggerFollow}
             isfollow={data.profile.isfollow}
             userAccountName={data.profile.accountname}
-            setProfile={setData}
           />
         )}
       </ProfileTopContainer>
