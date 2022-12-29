@@ -19,13 +19,18 @@ const GlobalStyle = createGlobalStyle`
   button{
     border:0;
     cursor: pointer;
+    background-color:transparent;
+  }
+  a{
+    color:black;
+    text-decoration:none;
   }
 `;
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <BrowserRouter>
+    <BrowserRouter basename="/triplus">
       <ThemeProvider theme={theme}>
         <GlobalStyle />
         <App />

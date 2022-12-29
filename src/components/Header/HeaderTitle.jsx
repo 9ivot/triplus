@@ -1,12 +1,6 @@
 import React from "react";
-import styled from "styled-components";
-
-const HeaderTit = styled.h1`
-  font-size: 18px;
-  font-weight: 500;
-  margin-top: 2px;
-`;
+import * as S from "./style";
 
 export default function HeaderTitle({ children }) {
-  return <HeaderTit>{children}</HeaderTit>;
+  return <S.HeaderTit>{children}</S.HeaderTit>;
 }
