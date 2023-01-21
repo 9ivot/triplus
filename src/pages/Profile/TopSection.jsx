@@ -8,14 +8,18 @@ import * as S from "./style";
 import LoadingPage from "../LoadingPage";
 
 export default function ProfileTopSection() {
-  const { data, setData, isLoading, getData } = useGetData();
+  const {
+    data: profileInfo,
+    setData: setProfileInfo,
+    isLoading,
+    getData: getProfileInfo,
+  } = useGetData();
   const userInfo = JSON.parse(localStorage.getItem("userinfo"));
   const { accountname } = useParams();
   const isMyProfile = accountname === userInfo.accountname;
   const url = `${process.env.REACT_APP_API_KEY}/profile/${accountname}`;
-
   useEffect(() => {
-    getData(url, "profile");
+    getProfileInfo(url, "profile");
   }, [accountname]);
 
   return isLoading ? (
@@ -25,31 +29,41 @@ export default function ProfileTopSection() {
       <h2 className="ir">프로필 수정 및 상품등록</h2>
       <S.ProfileTopContainer>
         <S.ProfileImgFollowBtnsCon>
-          <S.ProfileFollowers to={`/profile/${data.accountname}/follower`}>
-            <S.ProfileFollowCount>{data.followerCount}</S.ProfileFollowCount>
+          <S.ProfileFollowers
+            to={`/profile/${profileInfo.accountname}/follower`}
+          >
+            <S.ProfileFollowCount>
+              {profileInfo.followerCount}
+            </S.ProfileFollowCount>
             <S.ProfileFollowTxt>followers</S.ProfileFollowTxt>
           </S.ProfileFollowers>
           <S.ProfileUserImg
-            src={data.image.includes("Ellipse") ? user_img_big : data.image}
+            src={
+              profileInfo.image.includes("Ellipse")
+                ? user_img_big
+                : profileInfo.image
+            }
             alt="프로필 이미지"
           />
-          <S.ProfileFollowers to={`/profile/${data.accountname}/following`}>
+          <S.ProfileFollowers
+            to={`/profile/${profileInfo.accountname}/following`}
+          >
             <S.ProfileFollowCount isfollowing="1">
-              {data.followingCount}
+              {profileInfo.followingCount}
             </S.ProfileFollowCount>
             <S.ProfileFollowTxt>following</S.ProfileFollowTxt>
           </S.ProfileFollowers>
         </S.ProfileImgFollowBtnsCon>
-        <S.ProfileUserName>{data.username}</S.ProfileUserName>
-        <S.PofileUserId>&#64;{data.accountname} </S.PofileUserId>
-        <S.ProfileIntroduce>{data.intro}</S.ProfileIntroduce>
+        <S.ProfileUserName>{profileInfo.username}</S.ProfileUserName>
+        <S.PofileUserId>&#64;{profileInfo.accountname} </S.PofileUserId>
+        <S.ProfileIntroduce>{profileInfo.intro}</S.ProfileIntroduce>
         {isMyProfile ? (
-          <TopSectionMy {...data} />
+          <TopSectionMy {...profileInfo} />
         ) : (
           <TopSectionYour
-            isfollow={data.isfollow}
-            userAccountName={data.accountname}
-            setProfile={setData}
+            isfollow={profileInfo.isfollow}
+            userAccountName={profileInfo.accountname}
+            setProfile={setProfileInfo}
           />
         )}
       </S.ProfileTopContainer>

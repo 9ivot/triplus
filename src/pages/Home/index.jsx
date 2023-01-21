@@ -12,13 +12,18 @@ import { useObserver } from "../../hooks/useObserver";
 
 export default function Home() {
   const curRef = useRef(null);
-  const { data, isLoading, getData, page, reloading, finishReload } =
-    useObserver(curRef, 10);
+  const {
+    data: feedData,
+    isLoading,
+    getData: getFeedData,
+    page,
+    reloading,
+    finishReload,
+  } = useObserver(curRef, 10);
   const url = `${process.env.REACT_APP_API_KEY}/post/feed/?limit=10&skip=${page}`;
-
   useEffect(() => {
     if (!finishReload) {
-      getData(url, "posts");
+      getFeedData(url, "posts");
     }
   }, [page]);
 
@@ -32,10 +37,10 @@ export default function Home() {
       <MainContainer>
         {isLoading ? (
           <LoadingPage />
-        ) : data.length > 0 ? (
+        ) : feedData.length > 0 ? (
           <>
             <ul>
-              {data.map((post) => {
+              {feedData.map((post) => {
                 return <PostCard key={post.id} {...post} />;
               })}
             </ul>

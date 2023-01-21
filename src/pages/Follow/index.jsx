@@ -14,20 +14,25 @@ import { useObserver } from "../../hooks/useObserver";
 export default function Follow() {
   const [triggerFollow, setTriggerFollow] = useState(false);
   const curRef = useRef(null);
-  const { data, isLoading, getData, page, reloading, finishReload } =
-    useObserver(curRef, 15);
+  const {
+    data: folloData,
+    isLoading,
+    getData: getFollowData,
+    page,
+    reloading,
+    finishReload,
+  } = useObserver(curRef, 15);
   const { accountname } = useParams();
   const path = useLocation();
-
   const followingUrl = `${process.env.REACT_APP_API_KEY}/profile/${accountname}/following/?limit=15&skip=${page}`;
   const followerUrl = `${process.env.REACT_APP_API_KEY}/profile/${accountname}/follower/?limit=15&skip=${page}`;
 
   useEffect(() => {
     if (!finishReload) {
       if (path.pathname.includes("follower")) {
-        getData(followerUrl);
+        getFollowData(followerUrl);
       } else {
-        getData(followingUrl);
+        getFollowData(followingUrl);
       }
     }
   }, [triggerFollow, page]);
@@ -44,7 +49,7 @@ export default function Follow() {
             <LoadingPage />
           ) : (
             <>
-              {data.map((follow) => (
+              {folloData.map((follow) => (
                 <S.ProfileLink key={follow._id}>
                   <Link to={`/profile/${follow.accountname}`}>
                     <UserInfo {...follow} />

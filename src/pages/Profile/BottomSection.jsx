@@ -17,17 +17,16 @@ export default function ProfileBottomSection() {
 
   const curRef = useRef(null);
   const {
-    data,
+    data: postData,
     isLoading,
-    getData,
+    getData: getPostData,
     page,
     reloading,
     finishReload,
     setPage,
     setFinishReload,
-    setData,
+    setData: setPostData,
   } = useObserver(curRef, 5);
-
   const listUrl = `${process.env.REACT_APP_API_KEY}/post/${accountname}/userpost/?limit=5&skip=${page}`;
   const albumUrl = `${process.env.REACT_APP_API_KEY}/post/${accountname}/userpost/?limit=50`;
 
@@ -43,7 +42,7 @@ export default function ProfileBottomSection() {
 
   useEffect(() => {
     if (!finishReload) {
-      getData(listUrl, "post");
+      getPostData(listUrl, "post");
     }
   }, [page, accountname]);
   return (
@@ -76,8 +75,8 @@ export default function ProfileBottomSection() {
             })
         ) : (
           <>
-            {data.map((post) => {
-              return <PostCard key={post.id} setData={setData} {...post} />;
+            {postData.map((post) => {
+              return <PostCard key={post.id} setData={setPostData} {...post} />;
             })}
             <div ref={curRef}></div>
           </>

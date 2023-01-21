@@ -10,7 +10,7 @@ import { useGetData } from "../../hooks/useGetData";
 import * as S from "./style";
 
 export default function Search() {
-  const { data, getData } = useGetData();
+  const { data: searchData, getData: getSearchData } = useGetData();
 
   const [searchInputVal, setSearchInputVal] = useState("");
   const url = `${process.env.REACT_APP_API_KEY}/user/searchuser/?keyword=${searchInputVal}`;
@@ -18,7 +18,7 @@ export default function Search() {
   useEffect(() => {
     if (searchInputVal !== "") {
       const timeId = setTimeout(() => {
-        getData(url);
+        getSearchData(url);
       }, 300);
       return () => {
         clearTimeout(timeId);
@@ -36,8 +36,8 @@ export default function Search() {
       </Header>
       <MainContainer>
         <S.UserInfoContainer>
-          {data &&
-            data.map((search) => {
+          {searchData &&
+            searchData.map((search) => {
               return (
                 <Link key={search._id} to={`/profile/${search.accountname}`}>
                   <UserInfo {...search} />
